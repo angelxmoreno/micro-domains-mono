@@ -1,7 +1,7 @@
 {
     "$schema": "https://www.schemastore.org/package.json",
     "name": "micro-domains-mono",
-    "description": "",
+    "description": "A web service for buying short domain names.",
     "private": true,
     "scripts": {
         "build": "turbo run build",
@@ -9,8 +9,10 @@
         "check-types": "turbo run check-types",
         "test": "turbo run test",
         "test:watch": "turbo run test:watch",
-        "lint": "biome check .",
-        "lint:fix": "biome check --write"
+        "lint": "turbo run lint",
+        "lint:fix": "turbo run lint:fix",
+        "format": "biome format --write .",
+        "validate": "turbo run validate"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.3.8",

@@ -5,7 +5,7 @@
         "build": {
             "dependsOn": ["^build"],
             "inputs": ["$TURBO_DEFAULT$", ".env*"],
-            "outputs": [".next/**", "!.next/cache/**"]
+            "outputs": []
         },
         "test": {
             "cache": true
@@ -18,9 +18,14 @@
             "cache": false,
             "persistent": true
         },
-        "//#lint": {},
-        "//#lint:fix": {
+        "lint": {
+            "cache": true
+        },
+        "lint:fix": {
             "cache": false
+        },
+        "validate": {
+            "dependsOn": ["lint", "check-types", "test"]
         }
     }
 }
