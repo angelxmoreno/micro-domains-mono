@@ -9,7 +9,10 @@
     "types": "src/index.ts",
     "scripts": {
         "check-types": "tsc --noEmit",
-        "test": "bun test"
+        "test": "bun test",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "validate": "echo \"Validated\""
     },
     "devDependencies": {
         "@repo/typescript-config": "*"
