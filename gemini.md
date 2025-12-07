@@ -85,3 +85,11 @@ const openApiSchema = {
 
 const geminiSchema = _to_gemini_schema(openApiSchema);
 ```
+
+## Coding Standards
+
+This project uses [Biome](https://biomejs.dev/) for linting and formatting. A key standard is to maintain strict type safety.
+
+### Avoid the `any` Type
+
+The use of the `any` type is disallowed and will be caught by the linter. Using `any` defeats the purpose of TypeScript and can hide potential bugs. In cases where a type is intentionally manipulated for testing purposes, use a more explicit type assertion like `as unknown as <Type>` instead of `any`.
