@@ -12,6 +12,7 @@
         "lint": "turbo run lint",
         "lint:fix": "turbo run lint:fix",
         "format": "biome format --write .",
+        "cli": "turbo run dev --filter=@repo/cli --",
         "validate": "turbo run validate"
     },
     "devDependencies": {
