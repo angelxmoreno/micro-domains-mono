@@ -5,7 +5,7 @@ import { type RepoConfig, RepoConfigSchema } from '../schemas/RepoConfigSchema';
 import { NodeEnv } from '../types/NodeEnv';
 
 // Load environment-specific .env file based on NODE_ENV
-const nodeEnv = process.env.NODE_ENV || 'development';
+const nodeEnv = process.env.NODE_ENV || NodeEnv.development;
 const envFiles = [
     `../../.env.${nodeEnv}`, // .env.test, .env.development, etc.
     '../../.env', // Fallback to default .env
