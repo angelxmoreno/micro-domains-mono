@@ -18,7 +18,7 @@ dotenv.config({
 });
 
 export const createConfig = (overrides?: DeepPartial<RepoConfig>): RepoConfig => {
-    const env = (Bun.env.NODE_ENV || NodeEnv.development) as NodeEnv;
+    const env = (process.env.NODE_ENV || NodeEnv.development) as NodeEnv;
     const isDevelopment = env === NodeEnv.development;
     const isTesting = env === NodeEnv.test;
 

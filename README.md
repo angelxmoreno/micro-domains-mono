@@ -1,4 +1,4 @@
-#  शॉर्ट-डोमेन-मोनो
+# MicroDomains MonoRepo
 
 This monorepo is for a web service for buying short domain names.
 

@@ -7,17 +7,17 @@ describe('createConfig', () => {
     let originalBunEnvNodeEnv: string | undefined;
 
     beforeEach(() => {
-        // Store the original Bun.env.NODE_ENV before each test
-        originalBunEnvNodeEnv = Bun.env.NODE_ENV;
-        // Reset Bun.env.NODE_ENV to ensure test isolation
-        Bun.env.NODE_ENV = undefined;
+        // Store the original process.env.NODE_ENV before each test
+        originalBunEnvNodeEnv = process.env.NODE_ENV;
+        // Reset process.env.NODE_ENV to ensure test isolation
+        process.env.NODE_ENV = undefined;
     });
 
-    // Restore original Bun.env.NODE_ENV after all tests in this suite are done
+    // Restore original process.env.NODE_ENV after all tests in this suite are done
     // This is good practice but for Bun, each test file runs in its own process,
     // so it's less critical than in other runners. Still, good for clarity.
     afterEach(() => {
-        Bun.env.NODE_ENV = originalBunEnvNodeEnv;
+        process.env.NODE_ENV = originalBunEnvNodeEnv;
     });
 
     it('should return a default development config when no NODE_ENV is set and no overrides are provided', () => {
@@ -30,7 +30,7 @@ describe('createConfig', () => {
     });
 
     it('should return a test config when NODE_ENV is set to "test"', () => {
-        Bun.env.NODE_ENV = NodeEnv.test;
+        process.env.NODE_ENV = NodeEnv.test;
         const config = createConfig();
 
         expect(config.nodeEnv.env).toBe(NodeEnv.test);
@@ -40,7 +40,7 @@ describe('createConfig', () => {
     });
 
     it('should return a production config when NODE_ENV is set to "production"', () => {
-        Bun.env.NODE_ENV = NodeEnv.production;
+        process.env.NODE_ENV = NodeEnv.production;
         const config = createConfig();
 
         expect(config.nodeEnv.env).toBe(NodeEnv.production);
@@ -50,7 +50,7 @@ describe('createConfig', () => {
     });
 
     it('should merge overrides correctly', () => {
-        Bun.env.NODE_ENV = NodeEnv.production; // Start with production env
+        process.env.NODE_ENV = NodeEnv.production; // Start with production env
         const overrides = {
             nodeEnv: {
                 env: NodeEnv.development, // Override to development
