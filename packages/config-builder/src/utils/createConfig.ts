@@ -51,6 +51,9 @@ export const createConfig = (overrides?: DeepPartial<RepoConfig>): RepoConfig =>
                     ? isDevelopment || isTesting
                     : envParser.parseBoolean(process.env.PRETTY_LOGGING),
         },
+        database: {
+            url: process.env.DATABASE_URL ?? 'mysql://user:password@localhost:3306/database',
+        },
     };
 
     const config = merge(repoConfigEnv, overrides ?? {});
