@@ -6,7 +6,7 @@ This monorepo is for a web service for buying short domain names.
 
 This monorepo includes the following packages:
 
--   `@apps/cli`: A command-line interface for the project.
+-   `@repo/cli`: A command-line interface for the project.
 -   `@repo/config-builder`: A utility for creating and validating repository configuration.
 -   `@repo/typescript-config`: Shared TypeScript configurations.
 
