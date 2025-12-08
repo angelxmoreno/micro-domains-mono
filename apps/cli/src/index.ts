@@ -20,7 +20,7 @@ program.hook('preAction', () => {
 });
 
 // Register commands
-registerCommand(program, helloProgram);
+registerCommand(program, helloProgram, appContainer);
 
 // Error handling
 program.exitOverride();

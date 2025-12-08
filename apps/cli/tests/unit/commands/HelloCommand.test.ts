@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it, mock } from 'bun:test';
-import { AppConfig, AppLogger } from '@repo/config-builder';
-import type { InjectionToken } from 'tsyringe'; // Import InjectionToken type
+import { beforeEach, describe, expect, it, mock } from 'bun:test';
+import { AppConfig, AppLogger, type RepoConfig } from '@repo/config-builder';
+import type { Logger } from 'pino';
+import { container, type DependencyContainer } from 'tsyringe';
 import { helloAction } from '../../../src/commands/HelloCommand';
-import { appContainer } from '../../../src/config'; // Import the actual appContainer
-import { CliOutputService } from '../../../src/services/CliOutputService'; // Import the new service
+import { CliOutputService } from '../../../src/services/CliOutputService';
 
 // Define a simple mock for CliOutputService
 const mockCliOutput = {
@@ -11,47 +11,33 @@ const mockCliOutput = {
     error: mock(() => {}),
 };
 
-// Define a simple mock for AppLogger (just the debug method for this test)
+// Define a simple mock for AppLogger
 const mockAppLogger = {
     debug: mock(() => {}),
-    // Add other logger methods if they are called in helloAction or need to be mocked
 };
 
 describe('helloAction', () => {
-    let originalResolve: typeof appContainer.resolve;
+    let testContainer: DependencyContainer;
 
     beforeEach(() => {
-        originalResolve = appContainer.resolve;
+        // Create an isolated child container for each test
+        testContainer = container.createChildContainer();
 
-        // Mock appContainer.resolve to return our mocks when requested
-        appContainer.resolve = mock(<T>(token: InjectionToken<T>): T => {
-            if (token === AppLogger) {
-                return mockAppLogger as T;
-            }
-            if (token === CliOutputService) {
-                return mockCliOutput as T;
-            }
-            if (token === AppConfig) {
-                // Return a mock config object to satisfy the resolution
-                return { nodeEnv: { env: 'test' }, logger: { level: 'silent' } } as T;
-            }
-            throw new Error(`Unexpected token resolution in test: ${String(token)}`);
-        }) as typeof appContainer.resolve;
+        // Register our mocks on the test container
+        testContainer.register(AppLogger, { useValue: mockAppLogger as unknown as Logger });
+        testContainer.register(CliOutputService, { useValue: mockCliOutput as unknown as CliOutputService });
+        testContainer.register(AppConfig, {
+            useValue: { nodeEnv: { env: 'test' }, logger: { level: 'silent' } } as RepoConfig,
+        });
 
-        // Clear mocks for CliOutputService
+        // Clear mocks before each test
         mockCliOutput.log.mockClear();
         mockCliOutput.error.mockClear();
-        // Clear mocks for AppLogger
         mockAppLogger.debug.mockClear();
     });
 
-    afterEach(() => {
-        // Restore original resolve method
-        appContainer.resolve = originalResolve;
-    });
-
     it('should log "Hello World!" when no name is provided', async () => {
-        const options = {};
+        const options = { container: testContainer };
         await helloAction(undefined, options);
 
         expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
@@ -61,7 +47,7 @@ describe('helloAction', () => {
     });
 
     it('should log "Hello Alice!" when "Alice" is provided as the name', async () => {
-        const options = {};
+        const options = { container: testContainer };
         await helloAction('Alice', options);
 
         expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
@@ -72,7 +58,7 @@ describe('helloAction', () => {
 
     it('should log debug information with provided name and options', async () => {
         const name = 'Bob';
-        const options = { verbose: true };
+        const options = { container: testContainer, verbose: true };
         await helloAction(name, options);
 
         expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
