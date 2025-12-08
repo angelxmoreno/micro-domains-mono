@@ -16,7 +16,8 @@
         "validate": "echo \"Validated\""
     },
     "devDependencies": {
-        "@repo/typescript-config": "*"
+        "@repo/typescript-config": "*",
+        "tsyringe": "^4.10.0"
     },
     "peerDependencies": {
         "typescript": "^5",

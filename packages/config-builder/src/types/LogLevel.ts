@@ -15,8 +15,8 @@ export const inferLogLevel = (givenLevel: string | undefined, nodeEnv: NodeEnv):
         return givenLevel as LogLevel;
     }
 
-    if (nodeEnv === NodeEnv.development) {
-        return LogLevel.debug;
+    if (nodeEnv === NodeEnv.production) {
+        return LogLevel.warn;
     }
 
     if (nodeEnv === NodeEnv.test) {

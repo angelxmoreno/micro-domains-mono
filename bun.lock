@@ -27,6 +27,7 @@
       },
       "devDependencies": {
         "@repo/typescript-config": "*",
+        "tsyringe": "^4.10.0",
       },
       "peerDependencies": {
         "@types/bun": "^1.3",
