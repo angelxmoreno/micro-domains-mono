@@ -1,7 +1,9 @@
+import * as process from 'node:process';
 import type { DeepPartial } from '@ts-types/deep-partial';
 import dotenv from 'dotenv';
 import { merge } from 'ts-deepmerge';
 import { type RepoConfig, RepoConfigSchema } from '../schemas/RepoConfigSchema';
+import { inferLogLevel } from '../types/LogLevel';
 import { NodeEnv } from '../types/NodeEnv';
 
 // Load environment-specific .env file based on NODE_ENV
@@ -27,6 +29,10 @@ export const createConfig = (overrides?: DeepPartial<RepoConfig>): RepoConfig =>
             env,
             isDevelopment,
             isTesting,
+        },
+        logger: {
+            level: inferLogLevel(process.env.LOG_LEVEL, env),
+            usePretty: process.env.PRETTY_LOGGING === 'true',
         },
     };
 
