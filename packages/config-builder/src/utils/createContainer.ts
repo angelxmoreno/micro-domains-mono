@@ -1,6 +1,6 @@
+import type { RepoConfig } from '@repo/shared-types';
 import { container, type DependencyContainer, type InjectionToken, instanceCachingFactory } from 'tsyringe';
 import { AppConfig, AppLogger } from '../containerTokens';
-import type { RepoConfig } from '../schemas/RepoConfigSchema';
 import { createBaseLogger } from './createBaseLogger';
 
 export const createContainer = (config: RepoConfig): DependencyContainer => {

@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
-import { AppConfig, AppLogger, type RepoConfig } from '@repo/config-builder';
+import { AppConfig, AppLogger } from '@repo/config-builder';
+import type { RepoConfig } from '@repo/shared-types';
 import type { Logger } from 'pino';
 import { container, type DependencyContainer } from 'tsyringe';
 import { helloAction } from '../../../src/commands/HelloCommand';

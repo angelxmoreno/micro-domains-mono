@@ -1,11 +1,9 @@
 import { join } from 'node:path';
 import * as process from 'node:process';
+import { inferLogLevel, NodeEnv, type RepoConfig, RepoConfigSchema } from '@repo/shared-types';
 import type { DeepPartial } from '@ts-types/deep-partial';
 import dotenv from 'dotenv';
 import { merge } from 'ts-deepmerge';
-import { type RepoConfig, RepoConfigSchema } from '../schemas/RepoConfigSchema';
-import { inferLogLevel } from '../types/LogLevel';
-import { NodeEnv } from '../types/NodeEnv';
 import { envParser } from './envParser';
 
 export const createConfig = (overrides?: DeepPartial<RepoConfig>): RepoConfig => {

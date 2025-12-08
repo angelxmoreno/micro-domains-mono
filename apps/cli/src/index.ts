@@ -1,5 +1,6 @@
 #!/usr/bin/env bun
-import { AppLogger, LogLevel } from '@repo/config-builder';
+import { AppLogger } from '@repo/config-builder';
+import { LogLevel } from '@repo/shared-types';
 import { Command } from 'commander';
 import { helloProgram } from './commands/HelloCommand';
 import { appContainer } from './config';
