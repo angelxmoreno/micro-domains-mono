@@ -1,0 +1,6 @@
+preload = ["./src/preload.ts"]
+
+[test]
+preload = ["./src/preload.ts"]
+coverageReporter  = ["text", "lcov"]  # default ["text"]
+coverageDir = "coverage"  # default "coverage"
