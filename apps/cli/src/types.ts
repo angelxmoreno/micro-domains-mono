@@ -1,3 +1,5 @@
+import type { DependencyContainer } from 'tsyringe';
+
 type ArgParts = {
     name: string;
     description?: string;
@@ -20,13 +22,15 @@ export type AppCommand = {
     options?: OptionParts[];
 };
 
+type OptionsWithContainer = { container: DependencyContainer };
+
 // Helper type for creating type-safe action functions with explicit return type
-export type TypedActionFunction<T extends unknown[], O = Record<string, unknown>> = (
-    ...args: [...T, O]
+export type TypedActionFunction<T extends unknown[], O extends Record<string, unknown> = Record<string, unknown>> = (
+    ...args: [...T, O & OptionsWithContainer]
 ) => Promise<void>;
 
 // Helper function to create type-safe commands
-export function createTypedCommand<T extends unknown[], O = Record<string, unknown>>(
+export function createTypedCommand<T extends unknown[], O extends Record<string, unknown> = Record<string, unknown>>(
     config: {
         command: string;
         description: string;

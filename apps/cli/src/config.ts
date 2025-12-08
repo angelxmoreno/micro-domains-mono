@@ -1,3 +1,9 @@
-import { createConfig } from '@repo/config-builder';
+import { createConfig, createContainer } from '@repo/config-builder';
+import { CliOutputService } from './services/CliOutputService';
 
-export const appConfig = createConfig();
+const appConfig = createConfig();
+const appContainer = createContainer(appConfig);
+
+appContainer.registerInstance(CliOutputService, new CliOutputService());
+
+export { appContainer, appConfig };

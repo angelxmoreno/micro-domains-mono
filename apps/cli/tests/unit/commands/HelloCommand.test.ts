@@ -1,55 +1,69 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
-import type { pino } from 'pino';
+import { AppConfig, AppLogger, type RepoConfig } from '@repo/config-builder';
+import type { Logger } from 'pino';
+import { container, type DependencyContainer } from 'tsyringe';
 import { helloAction } from '../../../src/commands/HelloCommand';
+import { CliOutputService } from '../../../src/services/CliOutputService';
 
-// Mock pino to capture log calls
-const infoLogger = mock(() => {});
-const debugLogger = mock(() => {});
+// Define a simple mock for CliOutputService
+const mockCliOutput = {
+    log: mock(() => {}),
+    error: mock(() => {}),
+};
 
-const mockPino = {
-    info: infoLogger,
-    debug: debugLogger,
-    // Mock other pino methods if they were used, e.g., error, warn
-} as unknown as ReturnType<typeof pino>;
-
-// Mock the pino module to return our mockPino instance
-mock.module('pino', () => ({
-    pino: () => mockPino,
-}));
+// Define a simple mock for AppLogger
+const mockAppLogger = {
+    debug: mock(() => {}),
+};
 
 describe('helloAction', () => {
+    let testContainer: DependencyContainer;
+
     beforeEach(() => {
-        // Reset mocks before each test
-        infoLogger.mockClear();
-        debugLogger.mockClear();
+        // Create an isolated child container for each test
+        testContainer = container.createChildContainer();
+
+        // Register our mocks on the test container
+        testContainer.register(AppLogger, { useValue: mockAppLogger as unknown as Logger });
+        testContainer.register(CliOutputService, { useValue: mockCliOutput as unknown as CliOutputService });
+        testContainer.register(AppConfig, {
+            useValue: { nodeEnv: { env: 'test' }, logger: { level: 'silent' } } as RepoConfig,
+        });
+
+        // Clear mocks before each test
+        mockCliOutput.log.mockClear();
+        mockCliOutput.error.mockClear();
+        mockAppLogger.debug.mockClear();
     });
 
     it('should log "Hello World!" when no name is provided', async () => {
-        const options = {};
+        const options = { container: testContainer };
         await helloAction(undefined, options);
 
-        expect(mockPino.info).toHaveBeenCalledTimes(1);
-        expect(mockPino.info).toHaveBeenCalledWith('Hello World!');
-        expect(mockPino.debug).toHaveBeenCalledTimes(1);
-        expect(mockPino.debug).toHaveBeenCalledWith({ args: { name: 'World' }, options }, 'arguments received');
+        expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
+        expect(mockCliOutput.log).toHaveBeenCalledWith('Hello World!');
+        expect(mockAppLogger.debug).toHaveBeenCalledTimes(1);
+        expect(mockAppLogger.debug).toHaveBeenCalledWith({ args: { name: 'World' }, options }, 'arguments received');
     });
 
     it('should log "Hello Alice!" when "Alice" is provided as the name', async () => {
-        const options = {};
+        const options = { container: testContainer };
         await helloAction('Alice', options);
 
-        expect(mockPino.info).toHaveBeenCalledTimes(1);
-        expect(mockPino.info).toHaveBeenCalledWith('Hello Alice!');
-        expect(mockPino.debug).toHaveBeenCalledTimes(1);
-        expect(mockPino.debug).toHaveBeenCalledWith({ args: { name: 'Alice' }, options }, 'arguments received');
+        expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
+        expect(mockCliOutput.log).toHaveBeenCalledWith('Hello Alice!');
+        expect(mockAppLogger.debug).toHaveBeenCalledTimes(1);
+        expect(mockAppLogger.debug).toHaveBeenCalledWith({ args: { name: 'Alice' }, options }, 'arguments received');
     });
 
     it('should log debug information with provided name and options', async () => {
         const name = 'Bob';
-        const options = { verbose: true };
+        const options = { container: testContainer, verbose: true };
         await helloAction(name, options);
 
-        expect(mockPino.debug).toHaveBeenCalledTimes(1);
-        expect(mockPino.debug).toHaveBeenCalledWith({ args: { name: 'Bob' }, options }, 'arguments received');
+        expect(mockCliOutput.log).toHaveBeenCalledTimes(1);
+        expect(mockCliOutput.log).toHaveBeenCalledWith(`Hello ${name}!`);
+        expect(mockAppLogger.debug).toHaveBeenCalledTimes(1);
+        expect(mockAppLogger.debug).toHaveBeenCalledWith({ args: { name: 'Bob' }, options }, 'arguments received');
     });
 });
