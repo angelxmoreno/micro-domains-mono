@@ -1,7 +1,8 @@
 #!/usr/bin/env bun
+import { AppLogger, LogLevel } from '@repo/config-builder';
 import { Command } from 'commander';
-import { pino } from 'pino';
 import { helloProgram } from './commands/HelloCommand';
+import { appContainer } from './config';
 import { registerCommand } from './registerCommand';
 
 const program = new Command();
@@ -14,7 +15,7 @@ program
 
 program.hook('preAction', () => {
     if (program.opts().debug) {
-        // Register debug log level before any logger resolution
+        appContainer.resolve(AppLogger).level = LogLevel.debug;
     }
 });
 
@@ -29,7 +30,7 @@ try {
     process.exit(0); // Exit successfully after async operations complete
 } catch (error: unknown) {
     // Resolve logger here, after parseAsync/preAction has run
-    const logger = pino();
+    const logger = appContainer.resolve(AppLogger);
 
     if (error instanceof Error && 'code' in error) {
         if (error.code === 'commander.help' || error.code === 'commander.helpDisplayed') {

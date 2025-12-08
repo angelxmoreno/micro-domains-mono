@@ -1,10 +1,11 @@
-import { pino } from 'pino';
+import { AppLogger } from '@repo/config-builder';
+import { appContainer } from '../config';
 import { createTypedCommand, type TypedActionFunction } from '../types';
 
 export const helloAction: TypedActionFunction<[name?: string]> = async (name, options): Promise<void> => {
     const finalName = name ?? 'World';
-    // const logger = appContainer.resolve<Logger>(AppLogger);
-    const logger = pino();
+    const logger = appContainer.resolve(AppLogger);
+
     logger.debug({ args: { name: finalName }, options }, 'arguments received');
     logger.info(`Hello ${finalName}!`);
 };
