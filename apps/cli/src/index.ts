@@ -2,6 +2,7 @@
 import { AppLogger } from '@repo/config-builder';
 import { LogLevel } from '@repo/shared-types';
 import { Command } from 'commander';
+import { dictImportProgram } from './commands/DictImportCommand';
 import { helloProgram } from './commands/HelloCommand';
 import { appContainer } from './config';
 import { registerCommand } from './registerCommand';
@@ -22,6 +23,7 @@ program.hook('preAction', () => {
 
 // Register commands
 registerCommand(program, helloProgram, appContainer);
+registerCommand(program, dictImportProgram, appContainer);
 
 // Error handling
 program.exitOverride();

@@ -1,4 +1,5 @@
-import type { DatabaseConfig } from '@repo/shared-types/src/schemas/DatabaseConfigSchema';
+import { join } from 'node:path';
+import type { DatabaseConfig } from '@repo/shared-types';
 import { type Logger, pino } from 'pino';
 import pretty from 'pino-pretty';
 import type { DataSource, DataSourceOptions } from 'typeorm';
@@ -15,7 +16,7 @@ export function createDataSourceOptions(config: DatabaseConfig, parentLogger?: L
         messageFilter: (_message, type) => type === 'general',
     });
     const parsedUrlConfigs = parseDsnString(config.url);
-    const RootPath = `${__dirname}/..`;
+    const RootPath = join(import.meta.dir, '..'); // Use import.meta.dir for a reliable path
     return {
         ...parsedUrlConfigs,
         entities: [`${RootPath}/entities/*Entity.{ts,js}`],
@@ -35,10 +36,11 @@ export async function initializeDatabase(ds: DataSource, parentLogger?: Logger):
     let message = 'Database connection already initialized';
     try {
         if (!ds.isInitialized) {
+            await ds.initialize();
             message = 'Database connection initialized';
         }
 
-        logger.info(
+        logger.debug(
             {
                 options: ds.options,
             },

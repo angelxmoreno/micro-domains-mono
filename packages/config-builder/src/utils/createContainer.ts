@@ -1,3 +1,4 @@
+import { createDataSourceOptions, DataSource } from '@repo/database';
 import type { RepoConfig } from '@repo/shared-types';
 import { container, type DependencyContainer, type InjectionToken, instanceCachingFactory } from 'tsyringe';
 import { AppConfig, AppLogger } from '../containerTokens';
@@ -18,6 +19,9 @@ export const createContainer = (config: RepoConfig): DependencyContainer => {
 
     // Register AppConfig for dependency injection
     appContainer.registerInstance(AppConfig, config);
+
+    // create typeorm datasource
+    registerFactory(DataSource, () => new DataSource(createDataSourceOptions(config.database)));
 
     return appContainer;
 };
