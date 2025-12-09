@@ -1,7 +1,7 @@
 import { existsSync, mkdirSync } from 'node:fs';
 import { join } from 'node:path';
+import type { RepoConfig } from '@repo/shared-types';
 import pino from 'pino';
-import type { RepoConfig } from '../schemas/RepoConfigSchema';
 
 const ensureLogsDirectory = (): string => {
     const logsDir = join(process.cwd(), 'logs');

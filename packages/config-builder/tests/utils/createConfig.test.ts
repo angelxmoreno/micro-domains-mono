@@ -1,7 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it } from 'bun:test';
+import { NodeEnv, type RepoConfig, RepoConfigSchema } from '@repo/shared-types';
 import type { DeepPartial } from '@ts-types/deep-partial';
 import { ZodError } from 'zod';
-import { createConfig, NodeEnv, type RepoConfig, RepoConfigSchema } from '../../src';
+import { createConfig } from '../../src';
 
 describe('createConfig', () => {
     let originalBunEnvNodeEnv: string | undefined;
