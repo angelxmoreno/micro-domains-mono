@@ -1,0 +1,31 @@
+{
+    "name": "@repo/wordnet-dict-api",
+    "version": "1.0.0",
+    "private": true,
+    "description": "A dictionary microservice using WordNet data, Hono, and Drizzle ORM.",
+    "type": "module",
+    "main": "src/index.ts",
+    "scripts": {
+        "dev": "bun --hot src/index.ts",
+        "build": "bun build src/index.ts --outdir dist --target bun",
+        "start": "bun run dist/index.js",
+        "check-types": "tsc --noEmit",
+        "test": "bun test",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "validate": "echo \"Validated\"",
+        "db:generate": "drizzle-kit generate",
+        "db:migrate": "bun src/db/migrate.ts"
+    },
+    "dependencies": {
+        "@repo/config-builder": "*",
+        "@repo/shared-types": "*",
+        "drizzle-orm": "^0.32.0",
+        "hono": "^4.5.1"
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "*",
+        "@types/bun": "latest",
+        "drizzle-kit": "^0.23.0"
+    }
+}
