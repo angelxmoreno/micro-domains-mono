@@ -33,8 +33,10 @@ export abstract class BaseGitHubImport {
         const entities: WordDtoInsert[] = [];
         const lines = fullContents.split('\n');
         for (const word of lines) {
+            const trimmed = word.trim();
+            if (!trimmed) continue;
             entities.push({
-                name: word.trim(),
+                name: trimmed,
                 source: `${this.repoOwner}/${this.repoName}`,
             });
         }

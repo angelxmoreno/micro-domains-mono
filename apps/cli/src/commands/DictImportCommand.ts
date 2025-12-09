@@ -55,6 +55,7 @@ export const dictImportAction: TypedActionFunction<[source?: string]> = async (
     } catch (e) {
         const error = e as Error;
         spinner.fail(error.message);
+        process.exit(1);
     }
 };
 
