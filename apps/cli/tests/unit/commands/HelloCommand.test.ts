@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
-import { CliOutputService } from '@repo/cli-helper';
-import { AppConfig, AppLogger } from '@repo/config-builder';
+import { CliLogger, CliOutputService } from '@repo/cli-helper';
+import { AppConfig } from '@repo/config-builder';
 import type { RepoConfig } from '@repo/shared-types';
 import type { Logger } from 'pino';
 import { container, type DependencyContainer } from 'tsyringe';
@@ -25,7 +25,7 @@ describe('helloAction', () => {
         testContainer = container.createChildContainer();
 
         // Register our mocks on the test container
-        testContainer.register(AppLogger, { useValue: mockAppLogger as unknown as Logger });
+        testContainer.register(CliLogger, { useValue: mockAppLogger as unknown as Logger });
         testContainer.register(CliOutputService, { useValue: mockCliOutput as unknown as CliOutputService });
         testContainer.register(AppConfig, {
             useValue: { nodeEnv: { env: 'test' }, logger: { level: 'silent' } } as RepoConfig,
