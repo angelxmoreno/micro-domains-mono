@@ -38,31 +38,34 @@ export class CliApp {
         return this.program;
     }
 
+    registerCommand(command: AppCommand) {
+        registerCommand(this.program, command, this.container);
+    }
+
     init() {
-        const program = new Command();
-        program.name(this.initOptions.name).option('-d, --debug', 'output extra debugging information');
+        this.program = new Command();
+        this.program.name(this.initOptions.name).option('-d, --debug', 'output extra debugging information');
 
         if (this.initOptions.description) {
-            program.description(this.initOptions.description);
+            this.program.description(this.initOptions.description);
         }
 
         if (this.initOptions.version) {
-            program.version(this.initOptions.version);
+            this.program.version(this.initOptions.version);
         }
 
-        program.hook('preAction', () => {
-            if (program.opts().debug) {
+        this.program.hook('preAction', () => {
+            if (this.program.opts().debug) {
                 this.container.resolve(CliLogger).level = 'debug';
             }
         });
 
         for (const command of this.commands) {
-            registerCommand(program, command, this.container);
+            this.registerCommand(command);
         }
 
         // Error handling
-        program.exitOverride();
-        this.program = program;
+        this.program.exitOverride();
         return this;
     }
 
