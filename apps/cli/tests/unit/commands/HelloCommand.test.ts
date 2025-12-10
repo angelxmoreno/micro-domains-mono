@@ -1,10 +1,10 @@
 import { beforeEach, describe, expect, it, mock } from 'bun:test';
+import { CliOutputService } from '@repo/cli-helper';
 import { AppConfig, AppLogger } from '@repo/config-builder';
 import type { RepoConfig } from '@repo/shared-types';
 import type { Logger } from 'pino';
 import { container, type DependencyContainer } from 'tsyringe';
 import { helloAction } from '../../../src/commands/HelloCommand';
-import { CliOutputService } from '../../../src/services/CliOutputService';
 
 // Define a simple mock for CliOutputService
 const mockCliOutput = {

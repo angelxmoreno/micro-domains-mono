@@ -1,5 +1,5 @@
+import { CliOutputService } from '@repo/cli-helper';
 import { createConfig, createContainer } from '@repo/config-builder';
-import { CliOutputService } from './services/CliOutputService';
 
 const appConfig = createConfig();
 const appContainer = createContainer(appConfig);
