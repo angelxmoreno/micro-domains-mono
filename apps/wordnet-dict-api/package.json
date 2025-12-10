@@ -14,12 +14,15 @@
         "lint": "biome check .",
         "lint:fix": "biome check --write .",
         "validate": "echo \"Validated\"",
-        "cli": "bun run src/cli.ts"
+        "cli": "bun run src/cli.ts",
+        "migrate": "bun run scripts/migrate.ts"
     },
     "dependencies": {
         "@repo/cli-helper": "*",
         "commander": "^14.0.2",
         "hono": "^4.5.1",
+        "kysely": "^0.28.8",
+        "kysely-bun-sqlite": "^0.4.0",
         "reflect-metadata": "^0.2.2",
         "wordnet-db": "^3.1.14"
     },
