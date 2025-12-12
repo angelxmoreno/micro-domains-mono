@@ -2,7 +2,7 @@
     "name": "@repo/wordnet-dict-api",
     "version": "1.0.0",
     "private": true,
-    "description": "A dictionary microservice using WordNet data, Hono, and Drizzle ORM.",
+    "description": "A dictionary microservice using WordNet data, Hono, and Kysely.",
     "type": "module",
     "main": "src/index.ts",
     "scripts": {
@@ -15,8 +15,7 @@
         "lint:fix": "biome check --write .",
         "validate": "echo \"Validated\"",
         "cli": "bun run src/cli.ts",
-        "migrate": "bun run scripts/migrate.ts",
-        "postinstall": "cd node_modules/wordnet && bun run build"
+        "migrate": "bun run scripts/migrate.ts"
     },
     "dependencies": {
         "@repo/cli-helper": "*",

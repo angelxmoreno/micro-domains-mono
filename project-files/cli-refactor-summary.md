@@ -4,7 +4,7 @@ This document summarizes the architectural refactoring to create a shared CLI he
 
 ## What Has Been Completed
 
-- **New `@packages/cli-helper` Package**:
+- **New `@repo/cli-helper` Package**:
   - A new package, `@repo/cli-helper`, has been created to hold reusable CLI logic.
   - Core utilities like `registerCommand`, `CliOutputService`, and a (now removed) `createCliContainer` were moved into this package.
 

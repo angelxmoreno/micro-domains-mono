@@ -33,3 +33,6 @@ The service will expose the following REST endpoints for querying data:
 -   `GET /pos?word=<word>`: Returns part of speech.
 
 All responses are in JSON format.
+## Environment
+
+- `DB_PATH` (optional): absolute path to the SQLite database file. Defaults to `<repo>/apps/wordnet-dict-api/wordnet.sqlite` when unset.

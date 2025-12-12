@@ -29,10 +29,8 @@ export const ServeHttpAction: TypedActionFunction<[], ServeOptions> = async ({ c
         host,
     };
     const httpService = new HttpService(serviceDeps);
-    await httpService.start();
-    output.log(
-        `HTTP server listening on http://${host ?? '0.0.0.0'}:${parsedPort ?? Number(process.env.PORT ?? 3000)}`
-    );
+    const info = await httpService.start();
+    output.log(`HTTP server listening on http://${info.host}:${info.port}`);
 
     await new Promise(() => {});
 };

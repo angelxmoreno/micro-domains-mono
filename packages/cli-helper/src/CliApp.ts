@@ -32,6 +32,7 @@ export class CliApp {
         this.container = c ?? container.createChildContainer();
         this.logger = logger ?? pino(pretty()).child({ module: options.name });
         this.container.registerInstance(CliLogger, this.logger);
+        this.program = new Command();
     }
 
     getProgram(): Command {
@@ -43,7 +44,6 @@ export class CliApp {
     }
 
     init() {
-        this.program = new Command();
         this.program.name(this.initOptions.name).option('-d, --debug', 'output extra debugging information');
 
         if (this.initOptions.description) {

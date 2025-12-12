@@ -33,6 +33,8 @@ export class HttpService {
     private readonly host: string;
     private readonly app: Hono;
     private server?: ReturnType<typeof Bun.serve>;
+    private boundHost?: string;
+    private boundPort?: number;
 
     constructor({ logger, db, port, host }: HttpServiceDependencies) {
         this.logger = logger;
@@ -140,10 +142,13 @@ export class HttpService {
         return app;
     }
 
-    async start(): Promise<void> {
+    async start(): Promise<{ host: string; port: number }> {
         if (this.server) {
             this.logger.warn('HTTP server is already running');
-            return;
+            return {
+                host: this.boundHost ?? this.host,
+                port: this.boundPort ?? this.port,
+            };
         }
 
         this.server = Bun.serve({
@@ -152,7 +157,12 @@ export class HttpService {
             fetch: this.app.fetch,
         });
 
-        this.logger.info({ host: this.host, port: this.port }, 'HTTP server is listening');
+        this.boundHost = this.server.hostname ?? this.host;
+        this.boundPort = this.server.port ?? this.port;
+
+        const info = { host: this.boundHost, port: this.boundPort };
+        this.logger.info(info, 'HTTP server is listening');
+        return info;
     }
 
     async stop(): Promise<void> {
@@ -161,7 +171,19 @@ export class HttpService {
         }
         this.server.stop();
         this.server = undefined;
+        this.boundHost = undefined;
+        this.boundPort = undefined;
         this.logger.info('HTTP server stopped');
+    }
+
+    getBoundAddress(): { host: string; port: number } | null {
+        if (!this.server) {
+            return null;
+        }
+        return {
+            host: this.boundHost ?? this.host,
+            port: this.boundPort ?? this.port,
+        };
     }
 
     private createMissingWordResponse(wordParam: string | null | undefined) {

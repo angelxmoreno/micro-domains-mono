@@ -14,7 +14,7 @@ export type WordRelationType =
 
 export type Synset = {
     offset: string;
-    word: string;
+    words: string[];
     examples: string[];
     partOfSpeech: WordNetPOS;
     definition: string;
