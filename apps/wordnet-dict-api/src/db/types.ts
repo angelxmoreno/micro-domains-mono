@@ -3,16 +3,14 @@ import type { Generated } from 'kysely';
 export interface WordsTable {
     id: Generated<number>;
     lemma: string;
-    pos: 'n' | 'v' | 'a' | 'r';
-    frequency: number | null;
+    pos: 'n' | 'v' | 'a' | 's' | 'r';
 }
 
 export interface SynsetsTable {
     id: Generated<number>;
     offset: string;
-    pos: 'n' | 'v' | 'a' | 'r';
+    pos: 'n' | 'v' | 'a' | 's' | 'r';
     definition: string;
-    frequency: number | null;
     sense_key: string | null;
 }
 

@@ -8,7 +8,6 @@ export async function up(db: Kysely<KyselyDatabase>): Promise<void> {
         .addColumn('id', 'integer', (col) => col.primaryKey().autoIncrement())
         .addColumn('lemma', 'text', (col) => col.notNull())
         .addColumn('pos', 'text', (col) => col.notNull())
-        .addColumn('frequency', 'integer')
         .addUniqueConstraint('words_lemma_pos_unique', ['lemma', 'pos'])
         .execute();
 
@@ -19,7 +18,6 @@ export async function up(db: Kysely<KyselyDatabase>): Promise<void> {
         .addColumn('offset', 'text', (col) => col.notNull())
         .addColumn('pos', 'text', (col) => col.notNull())
         .addColumn('definition', 'text', (col) => col.notNull())
-        .addColumn('frequency', 'integer')
         .addColumn('sense_key', 'text')
         .addUniqueConstraint('synsets_offset_pos_unique', ['offset', 'pos'])
         .execute();
