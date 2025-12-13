@@ -1,0 +1,25 @@
+{
+    "name": "@repo/wordnet-db-types",
+    "version": "1.0.0",
+    "description": "TypeScript declarations for the wordnet-db package.",
+    "license": "MIT",
+    "type": "module",
+    "main": "index.d.ts",
+    "types": "index.d.ts",
+    "files": [
+        "index.d.ts"
+    ],
+    "scripts": {
+        "check-types": "tsc --noEmit",
+        "lint": "biome check .",
+        "lint:fix": "biome check --write .",
+        "validate": "echo \"Validated\""
+    },
+    "devDependencies": {
+        "@repo/typescript-config": "*"
+    },
+    "peerDependencies": {
+        "typescript": "^5",
+        "@types/bun": "^1.3"
+    }
+}
