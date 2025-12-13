@@ -2,8 +2,9 @@ import { select } from '@inquirer/prompts';
 import { CliLogger, CliOutputService, createTypedCommand, type TypedActionFunction } from '@repo/cli-helper';
 import { DataSource, initializeDatabase } from '@repo/database';
 import ora from 'ora';
-import type { BaseGitHubImport } from '../services/DictImport/GitHubImport/BaseGitHubImport';
 import { DwylEnglishWordsImport } from '../services/DictImport/GitHubImport/DwylEnglishWordsImport';
+import type { ImporterInterface } from '../services/DictImport/ImporterInterface';
+import { WordNetImport } from '../services/DictImport/WordNetImport';
 
 export const dictImportAction: TypedActionFunction<[source?: string]> = async (
     sourceArg,
@@ -14,10 +15,13 @@ export const dictImportAction: TypedActionFunction<[source?: string]> = async (
     const database = container.resolve(DataSource);
     await initializeDatabase(database, logger);
     const dwylEnglishWordsImport = container.resolve(DwylEnglishWordsImport);
+    const wordNetImport = container.resolve(WordNetImport);
 
-    const sources: Record<string, BaseGitHubImport> = {
-        [DwylEnglishWordsImport.name]: dwylEnglishWordsImport,
+    const sources: Record<string, ImporterInterface> = {
+        [dwylEnglishWordsImport.name]: dwylEnglishWordsImport,
+        [wordNetImport.name]: wordNetImport,
     };
+
     const availableSources = Object.keys(sources);
 
     let sourceToImport = sourceArg;
@@ -44,8 +48,9 @@ export const dictImportAction: TypedActionFunction<[source?: string]> = async (
         process.exit(1);
     }
 
-    cliOutput.log(`Importing using ${importer.repoUrl}...`);
+    cliOutput.log(`Importing using ${importer.name}...`);
     const spinner = ora().start();
+
     try {
         await importer.run();
         spinner.succeed();

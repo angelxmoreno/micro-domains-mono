@@ -16,16 +16,19 @@
         "validate": "echo \"Validated\""
     },
     "dependencies": {
-        "@repo/config-builder": "*",
         "@inquirer/prompts": "^8.0.2",
         "@repo/cli-helper": "*",
+        "@repo/config-builder": "*",
         "@repo/database": "*",
         "@repo/shared-types": "*",
         "git-pull-or-clone": "^2.0.2",
-        "ora": "^9.0.0"
+        "ora": "^9.0.0",
+        "wordnet": "github:angelxmoreno/wordnet#dev",
+        "wordnet-db": "^3.1.14"
     },
     "devDependencies": {
-        "@repo/typescript-config": "*"
+        "@repo/typescript-config": "*",
+        "@repo/wordnet-db-types": "*"
     },
     "peerDependencies": {
         "typescript": "^5",
