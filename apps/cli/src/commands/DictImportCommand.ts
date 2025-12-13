@@ -1,19 +1,16 @@
 import { select } from '@inquirer/prompts';
-import { AppLogger } from '@repo/config-builder';
+import { CliLogger, CliOutputService, createTypedCommand, type TypedActionFunction } from '@repo/cli-helper';
 import { DataSource, initializeDatabase } from '@repo/database';
 import ora from 'ora';
-
-import { CliOutputService } from '../services/CliOutputService';
 import type { BaseGitHubImport } from '../services/DictImport/GitHubImport/BaseGitHubImport';
 import { DwylEnglishWordsImport } from '../services/DictImport/GitHubImport/DwylEnglishWordsImport';
-import { createTypedCommand, type TypedActionFunction } from '../types';
 
 export const dictImportAction: TypedActionFunction<[source?: string]> = async (
     sourceArg,
     { container }
 ): Promise<void> => {
     const cliOutput = container.resolve(CliOutputService);
-    const logger = container.resolve(AppLogger);
+    const logger = container.resolve(CliLogger);
     const database = container.resolve(DataSource);
     await initializeDatabase(database, logger);
     const dwylEnglishWordsImport = container.resolve(DwylEnglishWordsImport);

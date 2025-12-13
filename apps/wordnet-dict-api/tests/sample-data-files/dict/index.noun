@@ -1,0 +1,7 @@
+1 This software and database is being provided to you.
+   2 By obtaining, using and/or copying this software and database, you agree to comply with these terms.
+   3
+car n 1 1 @ 1 1 102958343
+automobile n 1 1 @ 1 1 102958343
+person n 2 3 @ ~ %p 2 1 00007846 100007846
+vehicle n 1 1 @ 1 1 104524313

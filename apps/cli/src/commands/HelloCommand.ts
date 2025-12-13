@@ -1,11 +1,9 @@
-import { AppLogger } from '@repo/config-builder';
-import { CliOutputService } from '../services/CliOutputService';
-import { createTypedCommand, type TypedActionFunction } from '../types';
+import { CliLogger, CliOutputService, createTypedCommand, type TypedActionFunction } from '@repo/cli-helper';
 
 export const helloAction: TypedActionFunction<[name?: string]> = async (name, options): Promise<void> => {
     const { container } = options;
     const finalName = name ?? 'World';
-    const logger = container.resolve(AppLogger);
+    const logger = container.resolve(CliLogger);
     const cliOutput = container.resolve(CliOutputService);
 
     logger.debug({ args: { name: finalName }, options }, 'arguments received');
