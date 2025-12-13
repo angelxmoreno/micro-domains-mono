@@ -25,9 +25,12 @@
         "@repo/shared-types": "*",
         "git-pull-or-clone": "^2.0.2",
         "ora": "^9.0.0",
+        "wordnet": "github:angelxmoreno/wordnet#dev",
+        "wordnet-db": "^3.1.14",
       },
       "devDependencies": {
         "@repo/typescript-config": "*",
+        "@repo/wordnet-db-types": "*",
       },
       "peerDependencies": {
         "@types/bun": "^1.3",
@@ -40,17 +43,18 @@
       "dependencies": {
         "@repo/cli-helper": "*",
         "commander": "^14.0.2",
-        "wordnet": "github:angelxmoreno/wordnet#v0.1.0",
         "hono": "^4.5.1",
         "kysely": "^0.28.8",
         "kysely-bun-sqlite": "^0.4.0",
         "pino": "^10.1.0",
         "pino-pretty": "^13.1.3",
         "reflect-metadata": "^0.2.2",
+        "wordnet": "github:angelxmoreno/wordnet#v0.1.0",
         "wordnet-db": "^3.1.14",
       },
       "devDependencies": {
         "@repo/typescript-config": "*",
+        "@repo/wordnet-db-types": "*",
         "@types/bun": "latest",
       },
     },
@@ -133,6 +137,17 @@
     "packages/typescript-config": {
       "name": "@repo/typescript-config",
       "version": "0.0.0",
+    },
+    "packages/wordnet-db-types": {
+      "name": "@repo/wordnet-db-types",
+      "version": "1.0.0",
+      "devDependencies": {
+        "@repo/typescript-config": "*",
+      },
+      "peerDependencies": {
+        "@types/bun": "^1.3",
+        "typescript": "^5",
+      },
     },
   },
   "packages": {
@@ -247,6 +262,8 @@
     "@repo/shared-types": ["@repo/shared-types@workspace:packages/shared-types"],
 
     "@repo/typescript-config": ["@repo/typescript-config@workspace:packages/typescript-config"],
+
+    "@repo/wordnet-db-types": ["@repo/wordnet-db-types@workspace:packages/wordnet-db-types"],
 
     "@repo/wordnet-dict-api": ["@repo/wordnet-dict-api@workspace:apps/wordnet-dict-api"],
 
@@ -696,7 +713,7 @@
 
     "which-typed-array": ["which-typed-array@1.1.19", "", { "dependencies": { "available-typed-arrays": "^1.0.7", "call-bind": "^1.0.8", "call-bound": "^1.0.4", "for-each": "^0.3.5", "get-proto": "^1.0.1", "gopd": "^1.2.0", "has-tostringtag": "^1.0.2" } }, "sha512-rEvr90Bck4WZt9HHFC4DJMsjvu7x+r6bImz0/BrbWb7A2djJ8hnZMrWnHo9F8ssv0OMErasDhftrfROTyqSDrw=="],
 
-    "wordnet": ["wordnet@github:angelxmoreno/wordnet#70adf01", { "peerDependencies": { "typescript": "^5" } }, "angelxmoreno-wordnet-70adf01"],
+    "wordnet": ["wordnet@github:angelxmoreno/wordnet#5338cc3", { "peerDependencies": { "typescript": "^5" } }, "angelxmoreno-wordnet-5338cc3"],
 
     "wordnet-db": ["wordnet-db@3.1.14", "", {}, "sha512-zVyFsvE+mq9MCmwXUWHIcpfbrHHClZWZiVOzKSxNJruIcFn2RbY55zkhiAMMxM8zCVSmtNiViq8FsAZSFpMYag=="],
 
@@ -723,6 +740,8 @@
     "@isaacs/cliui/string-width": ["string-width@5.1.2", "", { "dependencies": { "eastasianwidth": "^0.2.0", "emoji-regex": "^9.2.2", "strip-ansi": "^7.0.1" } }, "sha512-HnLOCR3vjcY8beoNLtcjZ5/nxn2afmME6lhrDrebokqMap+XbeW8n9TXpPDOqdGK5qcI3oT0GKTW6wC7EMiVqA=="],
 
     "@isaacs/cliui/wrap-ansi": ["wrap-ansi@8.1.0", "", { "dependencies": { "ansi-styles": "^6.1.0", "string-width": "^5.0.1", "strip-ansi": "^7.0.1" } }, "sha512-si7QWI6zUMq56bESFvagtmzMdGOtoxfR+Sez11Mobfc7tm+VkUckk9bW2UeffTGVUbOksxmSw0AA2gs8g71NCQ=="],
+
+    "@repo/wordnet-dict-api/wordnet": ["wordnet@github:angelxmoreno/wordnet#70adf01", { "peerDependencies": { "typescript": "^5" } }, "angelxmoreno-wordnet-70adf01"],
 
     "cliui/string-width": ["string-width@4.2.3", "", { "dependencies": { "emoji-regex": "^8.0.0", "is-fullwidth-code-point": "^3.0.0", "strip-ansi": "^6.0.1" } }, "sha512-wKyQRQpjJ0sIp62ErSZdGsjMJWsap5oRNihHhu6G7JVO/9jIB6UyevL+tXuOqrng8j/cxKTWyWUwvSTriiZz/g=="],
 

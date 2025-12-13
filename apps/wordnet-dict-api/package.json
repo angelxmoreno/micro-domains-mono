@@ -30,6 +30,7 @@
         "wordnet-db": "^3.1.14"
     },
     "devDependencies": {
+        "@repo/wordnet-db-types": "*",
         "@repo/typescript-config": "*",
         "@types/bun": "latest"
     }

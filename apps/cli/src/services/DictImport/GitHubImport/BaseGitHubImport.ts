@@ -1,21 +1,14 @@
 import { resolve } from 'node:path';
-import type { WordsRepository } from '@repo/database';
 import type { WordDtoInsert } from '@repo/shared-types';
-import type { Logger } from 'pino';
 import { cloneOrPull } from '../../../utils/cloneOrPull';
+import { ImporterBase } from '../ImporterBase';
+import type { ImporterInterface } from '../ImporterInterface';
 
-export abstract class BaseGitHubImport {
-    protected logger: Logger;
+export abstract class BaseGitHubImport extends ImporterBase implements ImporterInterface {
     protected abstract repoOwner: string;
     protected abstract repoName: string;
     protected abstract filePaths: string[];
     protected targetParentPath = './.repos';
-    protected wordsRepo: WordsRepository;
-
-    protected constructor(logger: Logger, wordsRepo: WordsRepository) {
-        this.logger = logger;
-        this.wordsRepo = wordsRepo;
-    }
 
     get repoUrl(): string {
         return `https://github.com/${this.repoOwner}/${this.repoName}`;
