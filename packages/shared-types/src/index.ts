@@ -1,3 +1,4 @@
+export type { TldDtoInsert } from './dtos/TldDto';
 export type { WordDtoInsert } from './dtos/WordDto';
 export * from './Pagination';
 export { type DatabaseConfig, DatabaseConfigSchema } from './schemas/DatabaseConfigSchema';
