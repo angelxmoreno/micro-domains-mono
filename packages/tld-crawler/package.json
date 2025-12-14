@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "@keyvhq/core": "^2.1.11",
+        "@keyvhq/sqlite": "^2.1.11",
         "axios": "^1.13.2",
         "cheerio": "^1.1.2",
         "pino": "^10.1.0",

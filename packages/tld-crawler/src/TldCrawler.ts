@@ -51,7 +51,7 @@ export class TldCrawler {
         const html = await this.fetchHtml(ROOT_DB_URL);
         const $ = cheerio.load(html);
         const links = new Set<string>();
-        $('table.tld-table tbody tr td:first-child a').each((_idx, el) => {
+        $('table.iana-table tbody tr td:first-child a').each((_idx, el) => {
             const href = $(el).attr('href');
             if (!href) {
                 return;
@@ -60,6 +60,11 @@ export class TldCrawler {
             links.add(absolute);
         });
         const result = Array.from(links);
+        if (result.length === 0) {
+            const error = new Error('Failed to discover TLD detail links');
+            this.logger.error({ url: ROOT_DB_URL }, error.message);
+            throw error;
+        }
         this.logger.info({ count: result.length }, 'Discovered TLD detail links');
         return result;
     }
@@ -68,7 +73,28 @@ export class TldCrawler {
         this.logger.debug({ tldUrl }, 'Fetching TLD record');
         const html = await this.fetchHtml(tldUrl);
         const $ = cheerio.load(html);
-        const tld = $('span.domain.tld').text().trim().toLowerCase();
+        const rawHeading =
+            $('span.domain.tld').text().trim() ||
+            $('.page-header h1').first().text().trim() ||
+            $('h1').first().text().trim();
+        if (!rawHeading) {
+            const error = new Error('Failed to parse TLD from detail page');
+            this.logger.error({ tldUrl }, error.message);
+            throw error;
+        }
+        const extracted = rawHeading.match(/\.[a-z0-9-]+/i);
+        const fallbackFromUrl = () => {
+            const { pathname } = new URL(tldUrl);
+            const slug = pathname.substring(pathname.lastIndexOf('/') + 1).replace(/\.html$/, '');
+            return slug ? `.${slug}` : '';
+        };
+        const normalized = ((extracted ? extracted[0] : fallbackFromUrl()) || '').toLowerCase();
+        if (!normalized) {
+            const error = new Error('Failed to derive TLD from detail URL');
+            this.logger.error({ tldUrl }, error.message);
+            throw error;
+        }
+        const tld = normalized;
         let whoisServer: string | null = null;
         const infoTableRows = $('table.whois tbody tr');
         infoTableRows.each((_idx, row) => {
@@ -81,6 +107,14 @@ export class TldCrawler {
             }
         });
 
+        if (!whoisServer) {
+            const body = $('body').text();
+            const whoisMatch = body.match(/whois server:\s*([^\s]+)/i);
+            if (whoisMatch && whoisMatch[1]) {
+                whoisServer = whoisMatch[1].trim();
+            }
+        }
+
         const rdapServers: string[] = [];
         $('table.registry tbody tr').each((_idx, row) => {
             const heading = $(row).find('th').text().trim().toLowerCase();
@@ -92,6 +126,14 @@ export class TldCrawler {
             }
         });
 
+        if (rdapServers.length === 0) {
+            const body = $('body').text();
+            const rdapMatch = body.match(/rdap server:\s*([^\s]+)/i);
+            if (rdapMatch && rdapMatch[1]) {
+                rdapServers.push(rdapMatch[1].trim());
+            }
+        }
+
         const record: TldRecord = {
             tld,
             whoisServer,
@@ -101,21 +143,30 @@ export class TldCrawler {
         return record;
     }
 
-    async fetchAllTlds(): Promise<TldRecord[]> {
+    async fetchAllTlds(limit?: number): Promise<TldRecord[]> {
         const links = await this.listTldLinks();
+        const subset = limit ? links.slice(0, limit) : links;
         const results: TldRecord[] = [];
-        this.logger.info({ total: links.length }, 'Starting crawl of TLD detail pages');
+        let failures = 0;
+        this.logger.info({ total: subset.length }, 'Starting crawl of TLD detail pages');
 
-        for (const link of links) {
+        for (const link of subset) {
             try {
                 const record = await this.fetchTldRecord(link);
                 results.push(record);
             } catch (error) {
+                failures += 1;
                 this.logger.error({ link, error }, 'Failed to fetch TLD page');
             }
         }
 
-        this.logger.info({ total: results.length }, 'Completed crawl of TLD pages');
+        if (results.length === 0) {
+            const error = new Error('No TLD records were fetched');
+            this.logger.error({ failures }, error.message);
+            throw error;
+        }
+
+        this.logger.info({ total: results.length, failures }, 'Completed crawl of TLD pages');
         return results;
     }
 }
