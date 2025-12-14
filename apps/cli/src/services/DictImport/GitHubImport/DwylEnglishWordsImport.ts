@@ -6,7 +6,7 @@ import { BaseGitHubImport } from './BaseGitHubImport';
 
 @singleton()
 export class DwylEnglishWordsImport extends BaseGitHubImport {
-    static override name = 'DwylEnglishWords';
+    readonly name = 'DwylEnglishWords';
     protected filePaths: string[] = ['words_alpha.txt'];
     protected repoOwner = 'dwyl';
     protected repoName = 'english-words';

@@ -13,4 +13,4 @@ const cliParams: CliAppParams = {
 };
 
 const cliApp = new CliApp(cliParams);
-cliApp.init().start();
+cliApp.init().start().catch(console.error);
