@@ -19,7 +19,7 @@ export class WordNetImport extends ImporterBase implements ImporterInterface {
 
     async run(): Promise<void> {
         await wordnet.init(wordnetDb.path);
-        const allWords = wordnet.list();
+        const allWords: string[] = wordnet.list();
 
         for (const chunk of this.wordsAsChunk(allWords, WordNetImport.CHUNK_SIZE)) {
             const payload: WordDtoInsert[] = chunk.map((name) => ({
@@ -30,7 +30,7 @@ export class WordNetImport extends ImporterBase implements ImporterInterface {
         }
     }
 
-    *wordsAsChunk<T>(arr: T[], n: number): Generator<T[], void> {
+    *wordsAsChunk(arr: string[], n: number): Generator<string[], void> {
         for (let i = 0; i < arr.length; i += n) {
             yield arr.slice(i, i + n);
         }

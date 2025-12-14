@@ -9,6 +9,12 @@
     "files": [
         "index.d.ts"
     ],
+    "exports": {
+        ".": {
+            "types": "./index.d.ts",
+            "default": "./index.d.ts"
+        }
+    },
     "scripts": {
         "check-types": "tsc --noEmit",
         "lint": "biome check .",

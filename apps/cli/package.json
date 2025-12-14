@@ -23,7 +23,10 @@
         "@repo/shared-types": "*",
         "git-pull-or-clone": "^2.0.2",
         "ora": "^9.0.0",
-        "wordnet": "github:angelxmoreno/wordnet#dev",
+        "pino": "^10.1.0",
+        "reflect-metadata": "^0.2.2",
+        "tsyringe": "^4.10.0",
+        "wordnet": "github:angelxmoreno/wordnet#v0.1.1",
         "wordnet-db": "^3.1.14"
     },
     "devDependencies": {
