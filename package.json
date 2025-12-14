@@ -21,7 +21,9 @@
         "docker:clear": "docker compose -f docker/docker-compose.dev.yml down -v",
         "docker:test:clear": "docker compose -f docker/docker-compose.test.yml down -v",
         "docker:logs": "docker compose -f docker/docker-compose.dev.yml logs -f",
-        "docker:test:logs": "docker compose -f docker/docker-compose.test.yml logs -f"
+        "docker:test:logs": "docker compose -f docker/docker-compose.test.yml logs -f",
+        "setup:wordnet": "cd apps/wordnet-dict-api/node_modules/wordnet && bun run build || true",
+        "postinstall": "bun run setup:wordnet && cd apps/cli/node_modules/wordnet && bun run build || true"
     },
     "devDependencies": {
         "@biomejs/biome": "^2.3.8",
