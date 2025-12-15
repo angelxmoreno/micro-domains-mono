@@ -54,6 +54,11 @@ export const createConfig = (overrides?: DeepPartial<RepoConfig>): RepoConfig =>
         database: {
             url: process.env.DATABASE_URL ?? 'mysql://user:password@localhost:3306/database',
         },
+        cache: {
+            url: process.env.CACHE_URL ?? 'sqlite://repoDb.sqlite',
+            namespace: process.env.CACHE_NAMESPACE ?? 'app.namespace',
+            ttl: process.env.CACHE_TTL ? parseInt(process.env.CACHE_TTL, 10) : 60 * 60 * 24 * 7 * 1000,
+        },
     };
 
     const config = merge(repoConfigEnv, overrides ?? {});
