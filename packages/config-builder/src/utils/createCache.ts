@@ -5,7 +5,7 @@ import type { RepoConfig } from '@repo/shared-types';
 
 type CacheType = 'sqlite' | 'redis' | undefined;
 
-const cacheTypeFromUrl = (url: string) => new URL(url).protocol as CacheType;
+const cacheTypeFromUrl = (url: string) => new URL(url).protocol.replace(':', '') as CacheType;
 
 export const createCache = <T = unknown>(config: RepoConfig['cache']): Keyv<T> => {
     const cacheType = cacheTypeFromUrl(config.url);

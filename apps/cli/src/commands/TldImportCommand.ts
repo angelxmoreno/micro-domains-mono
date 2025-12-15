@@ -9,7 +9,7 @@ const parseLimit = (limitArg?: string): number | undefined => {
         return undefined;
     }
     const value = Number(limitArg);
-    if (!Number.isFinite(value) || value <= 0) {
+    if (!Number.isInteger(value) || value <= 0) {
         throw new Error('The optional [limit] argument must be a positive number.');
     }
     return Math.floor(value);
