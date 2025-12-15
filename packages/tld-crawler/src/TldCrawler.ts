@@ -6,13 +6,14 @@ import pretty from 'pino-pretty';
 import type { TldCrawlerOptions, TldRecord } from './types';
 
 const DEFAULT_USER_AGENT = 'tld-crawler/1.0 (+https://github.com/angelxmoreno/micro-domains-mono)';
-const DEFAULT_CACHE_TTL = 5 * 60 * 1000;
+const DEFAULT_CACHE_TTL = 60 * 60 * 24 * 1000;
 const ROOT_DB_URL = 'https://www.iana.org/domains/root/db';
 
 export class TldCrawler {
     protected readonly client: AxiosInstance;
     protected readonly cache: Keyv<string>;
     protected readonly logger: Logger;
+    protected readonly ttl: number;
 
     constructor(options: undefined | TldCrawlerOptions = undefined) {
         const { client, userAgent, cache, ttl, logger } = options || {};
@@ -32,6 +33,7 @@ export class TldCrawler {
 
         const baseLogger = logger || pino(pretty());
         this.logger = baseLogger.child({ module: TldCrawler });
+        this.ttl = ttl || DEFAULT_CACHE_TTL;
     }
 
     protected async fetchHtml(url: string): Promise<string> {
@@ -42,7 +44,7 @@ export class TldCrawler {
         }
         this.logger.debug({ url }, 'Fetching URL');
         const response = await this.client.get<string>(url, { responseType: 'text' });
-        await this.cache.set(url, response.data);
+        await this.cache.set(url, response.data, this.ttl);
         return response.data;
     }
 
@@ -110,7 +112,7 @@ export class TldCrawler {
         if (!whoisServer) {
             const body = $('body').text();
             const whoisMatch = body.match(/whois server:\s*([^\s]+)/i);
-            if (whoisMatch && whoisMatch[1]) {
+            if (whoisMatch?.[1]) {
                 whoisServer = whoisMatch[1].trim();
             }
         }
@@ -129,7 +131,7 @@ export class TldCrawler {
         if (rdapServers.length === 0) {
             const body = $('body').text();
             const rdapMatch = body.match(/rdap server:\s*([^\s]+)/i);
-            if (rdapMatch && rdapMatch[1]) {
+            if (rdapMatch?.[1]) {
                 rdapServers.push(rdapMatch[1].trim());
             }
         }

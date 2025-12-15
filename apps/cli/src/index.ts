@@ -2,6 +2,8 @@
 import { CliApp, type CliAppParams } from '@repo/cli-helper';
 import { dictImportProgram } from './commands/DictImportCommand';
 import { helloProgram } from './commands/HelloCommand';
+import { TldExportCommand } from './commands/TldExportCommand';
+import { TldImportCommand } from './commands/TldImportCommand';
 import { appContainer } from './config';
 
 const cliParams: CliAppParams = {
@@ -9,7 +11,7 @@ const cliParams: CliAppParams = {
     description: 'A CLI application',
     version: '1.0.0',
     container: appContainer,
-    commands: [helloProgram, dictImportProgram],
+    commands: [helloProgram, dictImportProgram, TldImportCommand, TldExportCommand],
 };
 
 const cliApp = new CliApp(cliParams);
