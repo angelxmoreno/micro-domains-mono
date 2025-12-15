@@ -1,8 +1,9 @@
 import { createDataSourceOptions, DataSource } from '@repo/database';
 import type { RepoConfig } from '@repo/shared-types';
 import { container, type DependencyContainer, type InjectionToken, instanceCachingFactory } from 'tsyringe';
-import { AppConfig, AppLogger } from '../containerTokens';
+import { AppCache, AppConfig, AppLogger } from '../containerTokens';
 import { createBaseLogger } from './createBaseLogger';
+import { createCache } from './createCache';
 
 export const createContainer = (config: RepoConfig): DependencyContainer => {
     const appContainer = container.createChildContainer();
@@ -22,6 +23,9 @@ export const createContainer = (config: RepoConfig): DependencyContainer => {
 
     // create typeorm datasource
     registerFactory(DataSource, () => new DataSource(createDataSourceOptions(config.database)));
+
+    // Register KeyvHQ cache
+    registerFactory(AppCache, () => createCache(config.cache));
 
     return appContainer;
 };

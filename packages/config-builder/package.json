@@ -15,6 +15,9 @@
         "validate": "echo \"Validated\""
     },
     "dependencies": {
+        "@keyvhq/core": "^2.1.11",
+        "@keyvhq/redis": "^2.1.11",
+        "@keyvhq/sqlite": "^2.1.11",
         "@repo/database": "*",
         "@repo/shared-types": "*",
         "@ts-types/deep-partial": "^0.0.1",
