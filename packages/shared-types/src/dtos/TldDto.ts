@@ -4,6 +4,6 @@ export interface TldDtoInsert {
     tld: string;
     type?: TldType | null;
     whoisServer?: string | null;
-    rdapServer?: string | null;
-    isActive: boolean;
+    rdapServers?: string[] | null;
+    isActive?: boolean;
 }

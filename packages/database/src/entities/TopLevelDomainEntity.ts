@@ -19,10 +19,10 @@ export class TopLevelDomainEntity extends AppEntity {
     @Column({ type: 'varchar', length: 255, nullable: true })
     whoisServer?: string | null;
 
-    @Column({ type: 'varchar', length: 255, nullable: true })
-    rdapServer?: string | null;
+    @Column({ type: 'simple-array', nullable: true, default: null })
+    rdapServers?: string[] | null;
 
-    @Column({ type: 'boolean', default: true, nullable: false })
+    @Column({ type: 'boolean', default: null, nullable: true })
     @Index()
-    isActive: boolean;
+    isActive?: boolean | null;
 }
